@@ -33,9 +33,9 @@ const [loading, setLoading] = useState(true);
     <div className="about-page">
       {/* Hero */}
       <section className="about-hero"   >
-        <h1>About Adugalam</h1>
+        <h1>About Adugalams</h1>
         <p className="about-subtitle">
-          Tamil Nadu’s premier sports venue booking platform. We’re on a mission
+          Tamil Nadu’s Premier sports venue booking platform. We’re on a mission
           to make sports accessible, convenient, and enjoyable for everyone.
         </p>
 
