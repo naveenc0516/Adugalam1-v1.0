@@ -5,8 +5,6 @@ const CartPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  // ✅ SAFE ACCESS
   const booking = location.state?.booking;
 
   // ✅ PREVENT CRASH

@@ -29,7 +29,6 @@ const [loading, setLoading] = useState(true);
 
 
   return (
-    
     <div className="about-page">
       {/* Hero */}
       <section className="about-hero"   >
