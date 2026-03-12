@@ -1,0 +1,206 @@
+/* ================= PAGE BACKGROUND ================= */
+.summary-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #e8f5e9, #f1f5f9);
+  font-family: "Poppins", sans-serif;
+}
+
+/* ================= HEADER ================= */
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.summary-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.back-btnn {
+  background: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.back-btnn:hover {
+  transform: translateY(-3px);
+  background: #16a34a;
+  color: white;
+}
+
+/* ================= CARD STYLE ================= */
+.summary-card,
+.payment-summary,
+.payment-method {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover,
+.payment-summary:hover,
+.payment-method:hover {
+  transform: translateY(-5px);
+}
+
+/* ================= ROW STYLING ================= */
+.summary-row,
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.summary-row span:first-child,
+.summary-line span:first-child {
+  color: #6b7280;
+}
+
+.summary-row span:last-child,
+.summary-line span:last-child {
+  font-weight: 500;
+  color: #111827;
+}
+
+/* ================= TOTAL HIGHLIGHT ================= */
+.summary-line.total {
+  font-size: 17px;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+/* ================= PAYMENT METHOD ================= */
+.payment-method {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.method-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.method-left img {
+  width: 45px;
+  height: auto;
+}
+
+/* ================= SUCCESS MODAL ================= */
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 24, 39, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-modal {
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  animation: scaleUp 0.3s ease-in-out;
+}
+
+.success-icon {
+  width: 70px;
+  height: 70px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px auto;
+}
+
+.success-modal h2 {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.success-modal p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ================= BUTTONS ================= */
+.success-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.outline-btn {
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid #16a34a;
+  background: white;
+  color: #16a34a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.outline-btn:hover {
+  background: #16a34a;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .summary-page {
+    padding: 20px 12px;
+  }
+
+  .summary-card,
+  .payment-summary,
+  .payment-method {
+    padding: 18px;
+  }
+}

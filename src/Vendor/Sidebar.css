@@ -1,0 +1,74 @@
+.sidebar {
+  background: linear-gradient(180deg, #065f46, #047857);
+  color: #fff;
+  padding-top: 20px;
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+
+/* Title */
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+/* Menu */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li a {
+  display: block;
+  padding: 10px 14px;
+  margin: 6px 10px;
+  border-radius: 8px;
+  color: #d1fae5;
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 90px; /* 👈 reduced green area */
+  }
+
+  .sidebar h2 {
+    font-size: 35; /* hide title */
+  }
+
+  .sidebar ul li a {
+    font-size: 12px;
+    text-align: center;
+    padding: 10px 6px;
+    margin: 6px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 64px; /* 👈 very slim sidebar */
+  }
+
+  .sidebar ul li a {
+    font-size: 11px;
+    padding: 8px 4px;
+    margin: 6px 4px;
+    text-align: center;
+  }
+}
