@@ -18,8 +18,8 @@ const EditProfile = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setForm({
-        firstname: user.name || "",
-        username: user.name || "",
+        firstname: user.firstname || "",
+        username: user.username || "",
         email: user.email || "",
         mobile: user.mobile || "",
       });
@@ -38,19 +38,13 @@ const EditProfile = () => {
       const token = localStorage.getItem("access");
       const API_BASE = "http://127.0.0.1:8000";
 
-      // Map frontend fields to backend fields
-      const profileData = {
-        name: form.firstname || form.username,
-        mobile: form.mobile
-      };
-
       const res = await fetch(`${API_BASE}/api/user/profile/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(profileData),
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();

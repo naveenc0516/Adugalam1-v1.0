@@ -102,7 +102,6 @@ const NavbarWrapper = () => {
     "/VendorLogout",
     "/Scheduletime",
     "/clubpolicy"
-
   ];
 
   if (hideNavbarRoutes.includes(location.pathname)) {
@@ -180,7 +179,6 @@ const BottomNavbarWrapper = () => {
     "/VendorLogout",
     "/Scheduletime",
     "/clubpolicy",
-    "/cart",
     "/payment",
     "/location",
     "/login",
@@ -197,6 +195,15 @@ const BottomNavbarWrapper = () => {
 
   return <Bottomnavbar />;
 };
+/* ---------------- ROUTE TRANSITION WRAPPER ---------------- */
+const RouteTransition = ({ children }) => {
+  const location = useLocation();
+  return (
+    <div className="route-transition" key={location.pathname}>
+      {children}
+    </div>
+  );
+};
 
 /* ---------------- MAIN APP ---------------- */
 const App = () => {
@@ -205,90 +212,92 @@ const App = () => {
       <ScrollToTop />
       <NavbarWrapper />
 
-      <Routes>
-        {/* PUBLIC */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/VendorLogin" element={<VendorLogin />} />
-        <Route path="/VendorSignup" element={<VendorSignup />} />
-        <Route path="/AdminLogin" element={<AdminLogin />} />
-        <Route path="/AdminSignup" element={<AdminSignup />} />
+      <RouteTransition>
+        <Routes>
+          {/* PUBLIC */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/VendorLogin" element={<VendorLogin />} />
+          <Route path="/VendorSignup" element={<VendorSignup />} />
+          <Route path="/AdminLogin" element={<AdminLogin />} />
+          <Route path="/AdminSignup" element={<AdminSignup />} />
 
-        {/* USER */}
-        <Route path="/book" element={<Book />} />
-        <Route path="/play" element={<Play />} />
-        <Route path="/train" element={<Train />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/EditProfile" element={<EditProfile />} />
-        <Route path="/MyProfile" element={<MyProfile />} />
-        <Route path="/profilehistory" element={<ProfileHistory />} />
-        <Route path="/hit" element={<Hit />} />
-        <Route path="/tvl" element={<Tvl />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/shop" element={<ShopSports />} />
-        <Route path="/tournaments" element={<Tournments />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/partner" element={<PatnerSection />} />
-        <Route path="/Settings" element={<Settings />} />
-        <Route path="/ChangePassword" element={<ChangePassword />} />
-        <Route path="/Terms" element={<Terms />} />
-        <Route path="/Privacy" element={<Privacy />} />
-        <Route path="/ClubPolicy" element={<ClubPolicy/>}/>
-       
-       {/* ADMIN */}
-        <Route element={<AdminLayout />}>
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/AdminSettings" element={<AdminSettings />} />
-          <Route path="/BookingManagement" element={<Bookingmanagement />} />
-          <Route path="/Chart" element={<Chart />} />
-          <Route path="/PaymentsReport" element={<PaymentsReport />} />
-          <Route path="/TurfManagement" element={<TurfManagement />} />
-          <Route path="/AddVendor" element={<AddVendor />} />
-          <Route path="/UserManagement" element={<UserManagement />} />
-          <Route path="/Vendor" element={<Vendor />} />
-          <Route path="/AdminLogout" element={<AdminLogin />} />
-          <Route path="/AddTurf" element={<AddTurf />} />
-          <Route path="/VendorRequest" element={<VendorRequest />} />
-          <Route path="/VendorList" element={<VendorList />} />
-          <Route path="/TurfList" element={<TurfList/>}/>
-          <Route path="/vendorlist" element={<VendorList />} />
-          <Route path="/vendor-edit/:id" element={<EditVendor />} />
-        </Route>
+          {/* USER */}
+          <Route path="/book" element={<Book />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/train" element={<Train />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/EditProfile" element={<EditProfile />} />
+          <Route path="/MyProfile" element={<MyProfile />} />
+          <Route path="/profilehistory" element={<ProfileHistory />} />
+          <Route path="/hit" element={<Hit />} />
+          <Route path="/tvl" element={<Tvl />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/shop" element={<ShopSports />} />
+          <Route path="/tournaments" element={<Tournments />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/partner" element={<PatnerSection />} />
+          <Route path="/Settings" element={<Settings />} />
+          <Route path="/ChangePassword" element={<ChangePassword />} />
+          <Route path="/Terms" element={<Terms />} />
+          <Route path="/Privacy" element={<Privacy />} />
+          <Route path="/ClubPolicy" element={<ClubPolicy />} />
+
+          {/* ADMIN */}
+          <Route element={<AdminLayout />}>
+            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/AdminSettings" element={<AdminSettings />} />
+            <Route path="/BookingManagement" element={<Bookingmanagement />} />
+            <Route path="/Chart" element={<Chart />} />
+            <Route path="/PaymentsReport" element={<PaymentsReport />} />
+            <Route path="/TurfManagement" element={<TurfManagement />} />
+            <Route path="/AddVendor" element={<AddVendor />} />
+            <Route path="/UserManagement" element={<UserManagement />} />
+            <Route path="/Vendor" element={<Vendor />} />
+            <Route path="/AdminLogout" element={<AdminLogin />} />
+            <Route path="/AddTurf" element={<AddTurf />} />
+            <Route path="/VendorRequest" element={<VendorRequest />} />
+            <Route path="/VendorList" element={<VendorList />} />
+            <Route path="/TurfList" element={<TurfList />} />
+            <Route path="/vendorlist" element={<VendorList />} />
+            <Route path="/vendor-edit/:id" element={<EditVendor />} />
+          </Route>
 
 
-        {/* VENDOR */}
-        <Route element={<VendorLayout />}>
-          <Route path="/VendorDashboard" element={<VendorDashboard />} />
-          <Route path="/addturf" element={<Addturf />} />
-          <Route path="/discount" element={<Discount />} />
-          <Route path="/VendorBookingManagement" element={<VendorBookingManagement />} />
-          <Route path="/VendorLogout" element={<Vendorlogout />} />
-          <Route path="/Scheduletime" element={<Scheduletime />} />
-        </Route>
+          {/* VENDOR */}
+          <Route element={<VendorLayout />}>
+            <Route path="/VendorDashboard" element={<VendorDashboard />} />
+            <Route path="/addturf" element={<Addturf />} />
+            <Route path="/discount" element={<Discount />} />
+            <Route path="/VendorBookingManagement" element={<VendorBookingManagement />} />
+            <Route path="/VendorLogout" element={<Vendorlogout />} />
+            <Route path="/Scheduletime" element={<Scheduletime />} />
+          </Route>
 
-        {/* BOOKING */}
-        <Route path="/cart" element={<Cartpage/>} />
-        <Route path="/galary" element={<Galarypage />} />
-        <Route path="/bookingground" element={<BookingGround />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/Bookhome" element={<Bookhome />} />
-        <Route path="/summary" element={<Summary />} />
-        <Route path="/mybooking" element={<Mybooking />} />
+          {/* BOOKING */}
+          <Route path="/cart" element={<Cartpage />} />
+          <Route path="/galary" element={<Galarypage />} />
+          <Route path="/bookingground" element={<BookingGround />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/Bookhome" element={<Bookhome />} />
+          <Route path="/summary" element={<Summary />} />
+          <Route path="/mybooking" element={<Mybooking />} />
 
-        {/* OTHER */}
-        <Route path="/partnerform" element={<PartnerForm />} />
-        <Route path="/newonadugalam" element={<Newonadugalam />} />
-        <Route path="/tennis" element={<Tennis />} />
-        <Route path="/allcategories" element={<AllCategories />} />
-        <Route path="/myfavourite" element={<Myfavourite />} />
-        <Route path="/myreviews" element={<Myreviews />} />
-        <Route path="/download" element={<h1>Coming Soon</h1>} />
-        <Route path="/location" element={<Location />} />
-        <Route path="/Bottomnavbar" element={<Bottomnavbar />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-      </Routes>
+          {/* OTHER */}
+          <Route path="/partnerform" element={<PartnerForm />} />
+          <Route path="/newonadugalam" element={<Newonadugalam />} />
+          <Route path="/tennis" element={<Tennis />} />
+          <Route path="/allcategories" element={<AllCategories />} />
+          <Route path="/myfavourite" element={<Myfavourite />} />
+          <Route path="/myreviews" element={<Myreviews />} />
+          <Route path="/download" element={<h1>Coming Soon</h1>} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/Bottomnavbar" element={<Bottomnavbar />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Routes>
+      </RouteTransition>
 
       <FooterWrapper />
       <BottomNavbarWrapper />

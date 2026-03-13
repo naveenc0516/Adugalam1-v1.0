@@ -143,7 +143,7 @@ const PaymentPage = () => {
           state: { booking_id: bookingId },
         });
       } else {
-        alert("Payment verification failed");
+        alert(data.error || "Payment verification failed");
       }
     } catch (err) {
       console.error(err);

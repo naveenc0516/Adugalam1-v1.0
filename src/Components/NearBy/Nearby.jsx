@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import "./Nearby.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -227,9 +228,14 @@ const Nearby = () => {
               <div
                 className="nb-card1"
                 key={gr.id}
-                onClick={() =>
-                  navigate(`/book?turf_id=${gr.id}`)
-                }
+                onClick={() => {
+                  const token = localStorage.getItem("access");
+                  if (token) {
+                    navigate(`/book?turf_id=${gr.id}`);
+                  } else {
+                    navigate("/login");
+                  }
+                }}
               >
                 <div className="img-wrapper1">
                   <img

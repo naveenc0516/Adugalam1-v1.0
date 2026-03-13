@@ -34,34 +34,15 @@ export default function Dashboard() {
     try {
       const apiUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
       const baseUrl = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
-      
-      const token = localStorage.getItem("access");
-      
       const res = await fetch(
-        `${baseUrl}/api/admin/dashboard/`,
-        {
-          headers: token ? {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-          } : {
-            "Content-Type": "application/json",
-          }
-        }
+        `${baseUrl}/api/admin/dashboard`
       );
-      
-      if (!res.ok) {
-        console.error("Dashboard fetch failed:", res.status);
-        return;
-      }
-      
       const data = await res.json();
 
       if (data.success) {
         setStats(data.stats);
         setToday(data.today);
         setChartData(data.weekly);
-      } else {
-        console.error("Dashboard error:", data.error);
       }
     } catch (err) {
       console.error("Dashboard fetch failed", err);
@@ -106,8 +87,6 @@ export default function Dashboard() {
         <h1>Adugalam – Admin Dashboard</h1>
         <p>Complete control over turfs, bookings, vendors & users</p>
       </header>
-
-
       <section className="stats-cards">
         <div className="stat-card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h4 style={{ margin: 0 }}>Total Users</h4>
@@ -126,8 +105,6 @@ export default function Dashboard() {
           <p style={{ margin: 0 }}>{stats.bookings || 0}</p>
         </div>
       </section>
-
-
       <section className="today">
         <h2>Today’s Overview</h2>
         <div className="today-box">
@@ -137,8 +114,6 @@ export default function Dashboard() {
           <div className="today-card">New Vendors <span>{today.vendors}</span></div>
         </div>
       </section>
-
-
       <section className="analytics">
         <h2>Booking & Revenue Comparison</h2>
         <div className="chart-wrapper">

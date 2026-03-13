@@ -15,7 +15,7 @@ const ForgotPassword = () => {
   // 1️⃣ Send OTP
   const sendOtp = async () => {
     try {
-      await API.post("api/send-otp/", { email });
+      await API.post("api/send-reset-otp/", { email });
       setStep(2);
       setError("");
     } catch {

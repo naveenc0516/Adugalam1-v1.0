@@ -15,9 +15,6 @@ const Settings = () => {
   const handleDeleteAccount = () => {
     // ❌ Remove user data
     localStorage.removeItem("user");
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("userName");
     localStorage.removeItem("isAuthenticated");
 
     // 🔄 Update navbar immediately

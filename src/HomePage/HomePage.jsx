@@ -5,7 +5,7 @@ import { FiUsers } from "react-icons/fi";
 import { LuBuilding } from "react-icons/lu";
 import { LuGraduationCap } from "react-icons/lu";
 import { GoTrophy } from "react-icons/go";
-import {FaRegStar,} from "react-icons/fa";
+import { FaRegStar, } from "react-icons/fa";
 
 import {
   FaBolt,
@@ -58,7 +58,8 @@ import PopularGround from '../Components/PopularGround/PopularGround'
 import Nearby from '../Components/NearBy/Nearby'
 import Footer from '../Footer/Footer'
 import Banner from '../Components/Banner/Banner'
-import { Navigate ,useNavigate} from "react-router-dom";
+import LoginPopup from '../Components/LoginPopup/LoginPopup'
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import Run from "../Run.jsx";
@@ -74,11 +75,58 @@ const Homepage = () => {
 
 
   const navigate = useNavigate();
-const featureRef = useRef(null);
-const builtRef = useRef(null);
+  const featureRef = useRef(null);
+  const builtRef = useRef(null);
 
 
-const [showHit, setShowHit] = useState(false);
+  const [showHit, setShowHit] = useState(false);
+
+  // Login popup state
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+  // Check if user is logged in
+  const isLoggedIn = () => {
+    const accessToken = localStorage.getItem("access");
+    if (!accessToken) return false;
+
+    try {
+      const tokenParts = accessToken.split('.');
+      if (tokenParts.length !== 3) return false;
+
+      const base64Url = tokenParts[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        window.atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join('')
+      );
+      const payload = JSON.parse(jsonPayload);
+      const currentTime = Date.now() / 1000;
+
+      // Check if token is expired
+      if (payload.exp && payload.exp < currentTime) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  // Show login popup on first visit for non-logged in users
+  useEffect(() => {
+    const hasSeenPopup = localStorage.getItem("hasSeenLoginPopup");
+
+    if (!isLoggedIn() && !hasSeenPopup) {
+      // Delay showing popup slightly for better UX
+      const timer = setTimeout(() => {
+        setShowLoginPopup(true);
+        localStorage.setItem("hasSeenLoginPopup", "true");
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
 
 
@@ -92,7 +140,7 @@ const [showHit, setShowHit] = useState(false);
         console.log(res.data);
       })
       .catch(err => {
-        console.error("API ERROR:",err);
+        console.error("API ERROR:", err);
       });
   }, []);
 
@@ -101,46 +149,46 @@ const [showHit, setShowHit] = useState(false);
 
 
   useEffect(() => {
-  if (window.innerWidth > 640) return; // ONLY mobile
+    if (window.innerWidth > 640) return; // ONLY mobile
 
-  const autoScroll = (ref) => {
-    if (!ref.current) return;
-
-    let scrollAmount = 0;
-    const speed = 0.5; // swipe speed
-
-    const interval = setInterval(() => {
+    const autoScroll = (ref) => {
       if (!ref.current) return;
 
-      scrollAmount += speed;
-      ref.current.scrollLeft += speed;
+      let scrollAmount = 0;
+      const speed = 0.5; // swipe speed
 
-      // Reset when end reached
-      if (
-        ref.current.scrollLeft + ref.current.clientWidth >=
-        ref.current.scrollWidth - 5
-      ) {
-        ref.current.scrollLeft = 0;
-        scrollAmount = 0;
-      }
-    }, 20);
+      const interval = setInterval(() => {
+        if (!ref.current) return;
 
-    return interval;
-  };
+        scrollAmount += speed;
+        ref.current.scrollLeft += speed;
 
-  const featureInterval = autoScroll(featureRef);
-  const builtInterval = autoScroll(builtRef);
+        // Reset when end reached
+        if (
+          ref.current.scrollLeft + ref.current.clientWidth >=
+          ref.current.scrollWidth - 5
+        ) {
+          ref.current.scrollLeft = 0;
+          scrollAmount = 0;
+        }
+      }, 20);
 
-  return () => {
-    clearInterval(featureInterval);
-    clearInterval(builtInterval);
-  };
-}, []);
+      return interval;
+    };
+
+    const featureInterval = autoScroll(featureRef);
+    const builtInterval = autoScroll(builtRef);
+
+    return () => {
+      clearInterval(featureInterval);
+      clearInterval(builtInterval);
+    };
+  }, []);
 
 
 
 
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -156,31 +204,31 @@ const [loading, setLoading] = useState(true);
 
 
 
-  
+
 
 
 
 
   return (
-    
+
     <div className="home">
       <div className="home-container">
-          <Header/>
-          <Banner/>
-          <Categories/>
-          <Nearby/>
-          <PopularGround/>
-          {/* <Tvl/>   */}
+        <Header />
+        <Banner />
+        <Categories />
+        <Nearby />
+        <PopularGround />
+        {/* <Tvl/>   */}
 
-          {!showHit  ? (
-              <Tvl onHit={() => setShowHit(true)} />
-                ) : (
-              <Hit />
-             )}
-    </div>
+        {!showHit ? (
+          <Tvl onHit={() => setShowHit(true)} />
+        ) : (
+          <Hit />
+        )}
+      </div>
 
 
-  
+
 
 
 
@@ -193,7 +241,7 @@ const [loading, setLoading] = useState(true);
         }}
       >
         <div className="overlay1">
-        
+
           <div className="hero-content1 glass1">
             <h1>
               Play Anytime. Book Any <br />
@@ -209,8 +257,10 @@ const [loading, setLoading] = useState(true);
             </p>
 
             <div className="hero-buttons1">
-              <button className="primary-btn1">Start Playing Now</button>
-              <button className="primary-btn1">
+              <button className="primary-btn1"
+                onClick={() => navigate("/Bookhome")}>Start Playing Now</button>
+              <button className="primary-btn1"
+                onClick={() => navigate("/partner")}>
                 List Your Venue / Academy / Shop
               </button>
             </div>
@@ -257,355 +307,358 @@ const [loading, setLoading] = useState(true);
 
 
       {/* FEATURES SECTION */}
-<div className="features1">
-  <h2 className="features-title1">
-    Play. Book. Train. Shop. Compete.
-  </h2>
-  <p className="features-subtitle1">
-    Everything you need in one powerful sports community platform
-  </p>
-
-  <div className="features-flex1" ref={featureRef}>
-
-    {/* PLAY */}
-    <div className="feature-card51">
-      <h4 className="feature-tag1">PLAY</h4>
-      <h3>Match With Players Instantly</h3>
-      <p>Connect with anyone in Tamil Nadu who wants to play the same sport as you.</p>
-      <ul>
-        <li><FeatureUsers /> Discover players nearby</li>
-        <li><FeatureSend /> Send & receive play requests</li>
-        <li><FeatureTrophy /> Join ongoing games or host your own match</li>
-        <li><FeatureStar /> Build your Adugalam Skill Score</li>
-      </ul>
-      <div className="feature-para1">
-          <p>Find players for cricket, football, badminton, volleyball, kabaddi, table tennis, and more - across Tirunelveli, Madurai, Coimbatore, Trichy, Chennai, and every district.</p>
-      </div>
-      </div>
-
-    {/* BOOK */}
-    <div className="feature-card51">
-      <h4 className="feature-tag1">BOOK</h4>
-      <h3>Smart Venue Booking for Every Sport</h3>
-      <p>Book courts, turfs, grounds, and sports venues across Tamil Nadu in seconds.</p>
-      <ul>
-        <li><FeatureCalendar /> Real-time availability</li>
-        <li><FeatureBolt /> Instant booking confirmation</li>
-        <li><FeatureWhatsapp /> Invite players via WhatsApp</li>
-        <li><FeatureStar /> Earn credibility through reviews</li>
-      </ul>
-      <div className="feature-para1">
-      <p>Adugalam partners with 100+ venues across Tamil Nadu to make booking sports venues faster, safer, and transparent.</p>
-      </div>
-    </div>
-
-    {/* TRAIN */}
-    <div className="feature-card51">
-      <h4 className="feature-tag1">TRAIN</h4>
-      <h3>Learn From Certified Coaches</h3>
-      <p>Choose from the best trainers in your city.</p>
-      <ul>
-        <li><FeatureAcademy /> Book coaching programs</li>
-        <li><FeatureLock /> Pay securely</li>
-        <li><FeatureChart /> Track your progress</li>
-        <li><FeatureUsers /> Join beginner to advanced batches</li>
-      </ul>
-      <div className="feature-para1">
-      <p>Find badminton coaches, football academies, swimming instructors, cricket trainers, and fitness coaches across Tamil Nadu.</p>
-      </div>
-    </div>
-
-    {/* SHOP */}
-    <div className="feature-card51">
-      <h4 className="feature-tag1">SHOP</h4>
-      <h3>Hyperlocal Sports Marketplace</h3>
-      <p>Support local sports shops & get fast delivery.</p>
-      <ul>
-        <li><FeatureBag /> Football, cricket, badminton gear</li>
-        <li><FeatureTruck /> Same-day delivery in select areas</li>
-        <li><FeatureTags /> Price transparency & exclusive deals</li>
-        <li><FeatureStar /> Verified buyer reviews</li>
-      </ul>
-      <div className="feature-para1">
-         <p>Buy sports items locally from trusted shops in Tamil Nadu. Faster and cheaper than national e-commerce platforms.</p>
-      </div>
-    </div>
-
-    {/* TOURNAMENTS */}
-    <div className="feature-card51">
-      <h4 className="feature-tag1">TOURNAMENTS</h4>
-      <h3>Participate, Organize, Win</h3>
-      <p>Stay updated with tournaments happening across Tamil Nadu.</p>
-      <ul>
-        <li><FeatureTrophy /> Current & upcoming tournaments</li>
-        <li><FeatureUsers /> Register your team</li>
-        <li><FeatureCalendar /> Book venues for tournaments</li>
-        <li><FeatureChart /> Live brackets & score updates</li>
-      </ul>
-      
-    </div>
-
-    {/* EVENTS */}
-    <div className="feature-card51">
-      <h4 className="feature-tag1">EVENTS</h4>
-      <h3>Discover Sports Events in Tamil Nadu</h3>
-      <p>From fun runs to marathons, sports expos, coaching camps.</p>
-      <ul>
-        <li><FeatureCalendar /> Event details & registration</li>
-        <li><FeatureMap /> Location maps</li>
-        <li><FeatureTicket /> Tickets & booking</li>
-        <li><FeatureImages /> Media & photos</li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-
-
-
-{/* ================= BUILT FOR EVERY SPORTS LOVER ================= */}
-<div className="built-section1">
-  <h2 className="built-title1">Built for Every Sports Lover</h2>
-
-  <p className="built-subtitle1">
-    Join Tamil Nadu's fastest-growing sports community
-  </p>
-
-  <div className="built-grid1" ref={builtRef}>
-    <div className="built-card1">
-      <div className="built-icon1">
-        <FaUsers />
-      </div>
-      <h3>Players</h3>
-      <p>Find partners, build your rating, play regularly.</p>
-    </div>
-
-    <div className="built-card1">
-      <div className="built-icon1">
-        <FaBuilding />
-      </div>
-      <h3>Venue Owners</h3>
-      <p>Increase bookings, manage timings, gain visibility.</p>
-    </div>
-
-    <div className="built-card1">
-      <div className="built-icon1">
-        <FaGraduationCap />
-      </div>
-      <h3>Coaches</h3>
-      <p>Grow your academy and earn reputation.</p>
-    </div>
-
-    <div className="built-card1">
-      <div className="built-icon1">
-        <FaStore />
-      </div>
-      <h3>Shops</h3>
-      <p>Sell more without competing against big marketplaces.</p>
-    </div>
-
-    <div className="built-card1">
-      <div className="built-icon1">
-        <FaTrophy />
-      </div>
-      <h3>Organizers</h3>
-      <p>Run smoother tournaments & events.</p>
-    </div>
-
-    <div className="built-card1">
-      <div className="built-icon1">
-        <FaChartBar />
-      </div>
-      <h3>Investors & Partners</h3>
-      <p>
-        Join the fastest growing sports-tech ecosystem in Tamil Nadu.
-      </p>
-    </div>
-  </div>
-</div>
-
-
-
-{/* ================= TECH STACK SECTION ================= */}
-  <div className="tech-section1">
-      <h2 className="tech-title1">
-        A Modern Sports-Tech Platform Built With the Best Tech Stack
-      </h2>
-
-      <p className="tech-subtitle1">
-        Powered by React + Python for Speed & Reliability
-      </p>
-
-      <div className="tech-box1">
-        <p className="tech-desc1">
-          Adugalam is engineered with a fast and scalable React JS frontend and a
-          secure Python backend. This ensures:
+      <div className="features1">
+        <h2 className="features-title1">
+          Play. Book. Train. Shop. Compete.
+        </h2>
+        <p className="features-subtitle1">
+          Everything you need in one powerful sports community platform
         </p>
 
-        <div className="tech-grid1">
-          <div className="tech-item1">
-            <FaBolt className="tech-icon1" />
-            <span>Lightning-fast UI</span>
+        <div className="features-flex1" ref={featureRef}>
+
+          {/* PLAY */}
+          <div className="feature-card51">
+            <h4 className="feature-tag1">PLAY</h4>
+            <h3>Match With Players Instantly</h3>
+            <p>Connect with anyone in Tamil Nadu who wants to play the same sport as you.</p>
+            <ul>
+              <li><FeatureUsers /> Discover players nearby</li>
+              <li><FeatureSend /> Send & receive play requests</li>
+              <li><FeatureTrophy /> Join ongoing games or host your own match</li>
+              <li><FeatureStar /> Build your Adugalam Skill Score</li>
+            </ul>
+            <div className="feature-para1">
+              <p>Find players for cricket, football, badminton, volleyball, kabaddi, table tennis, and more - across Tirunelveli, Madurai, Coimbatore, Trichy, Chennai, and every district.</p>
+            </div>
           </div>
 
-          <div className="tech-item1">
-            <FaShieldAlt className="tech-icon1" />
-            <span>High security for payments & user data</span>
+          {/* BOOK */}
+          <div className="feature-card51">
+            <h4 className="feature-tag1">BOOK</h4>
+            <h3>Smart Venue Booking for Every Sport</h3>
+            <p>Book courts, turfs, grounds, and sports venues across Tamil Nadu in seconds.</p>
+            <ul>
+              <li><FeatureCalendar /> Real-time availability</li>
+              <li><FeatureBolt /> Instant booking confirmation</li>
+              <li><FeatureWhatsapp /> Invite players via WhatsApp</li>
+              <li><FeatureStar /> Earn credibility through reviews</li>
+            </ul>
+            <div className="feature-para1">
+              <p>Adugalam partners with 100+ venues across Tamil Nadu to make booking sports venues faster, safer, and transparent.</p>
+            </div>
           </div>
 
-          <div className="tech-item1">
-            <FaChartLine className="tech-icon1" />
-            <span>Scalable architecture for 1,00,000+ users</span>
+          {/* TRAIN */}
+          <div className="feature-card51">
+            <h4 className="feature-tag1">TRAIN</h4>
+            <h3>Learn From Certified Coaches</h3>
+            <p>Choose from the best trainers in your city.</p>
+            <ul>
+              <li><FeatureAcademy /> Book coaching programs</li>
+              <li><FeatureLock /> Pay securely</li>
+              <li><FeatureChart /> Track your progress</li>
+              <li><FeatureUsers /> Join beginner to advanced batches</li>
+            </ul>
+            <div className="feature-para1">
+              <p>Find badminton coaches, football academies, swimming instructors, cricket trainers, and fitness coaches across Tamil Nadu.</p>
+            </div>
           </div>
 
-          <div className="tech-item1">
-            <FaWifi className="tech-icon1" />
-            <span>Real-time match updates</span>
+          {/* SHOP */}
+          <div className="feature-card51">
+            <h4 className="feature-tag1">SHOP</h4>
+            <h3>Hyperlocal Sports Marketplace</h3>
+            <p>Support local sports shops & get fast delivery.</p>
+            <ul>
+              <li><FeatureBag /> Football, cricket, badminton gear</li>
+              <li><FeatureTruck /> Same-day delivery in select areas</li>
+              <li><FeatureTags /> Price transparency & exclusive deals</li>
+              <li><FeatureStar /> Verified buyer reviews</li>
+            </ul>
+            <div className="feature-para1">
+              <p>Buy sports items locally from trusted shops in Tamil Nadu. Faster and cheaper than national e-commerce platforms.</p>
+            </div>
           </div>
 
-          <div className="tech-item1">
-            <FaCode className="tech-icon1" />
-            <span>Optimized API for training programs & bookings</span>
+          {/* TOURNAMENTS */}
+          <div className="feature-card51">
+            <h4 className="feature-tag1">TOURNAMENTS</h4>
+            <h3>Participate, Organize, Win</h3>
+            <p>Stay updated with tournaments happening across Tamil Nadu.</p>
+            <ul>
+              <li><FeatureTrophy /> Current & upcoming tournaments</li>
+              <li><FeatureUsers /> Register your team</li>
+              <li><FeatureCalendar /> Book venues for tournaments</li>
+              <li><FeatureChart /> Live brackets & score updates</li>
+            </ul>
+
           </div>
 
-          <div className="tech-item1">
-            <FaDatabase className="tech-icon1" />
-            <span>Secure Python backend</span>
+          {/* EVENTS */}
+          <div className="feature-card51">
+            <h4 className="feature-tag1">EVENTS</h4>
+            <h3>Discover Sports Events in Tamil Nadu</h3>
+            <p>From fun runs to marathons, sports expos, coaching camps.</p>
+            <ul>
+              <li><FeatureCalendar /> Event details & registration</li>
+              <li><FeatureMap /> Location maps</li>
+              <li><FeatureTicket /> Tickets & booking</li>
+              <li><FeatureImages /> Media & photos</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      {/* ================= BUILT FOR EVERY SPORTS LOVER ================= */}
+      <div className="built-section1">
+        <h2 className="built-title1">Built for Every Sports Lover</h2>
+
+        <p className="built-subtitle1">
+          Join Tamil Nadu's fastest-growing sports community
+        </p>
+
+        <div className="built-grid1" ref={builtRef}>
+          <div className="built-card1">
+            <div className="built-icon1">
+              <FaUsers />
+            </div>
+            <h3>Players</h3>
+            <p>Find partners, build your rating, play regularly.</p>
+          </div>
+
+          <div className="built-card1">
+            <div className="built-icon1">
+              <FaBuilding />
+            </div>
+            <h3>Venue Owners</h3>
+            <p>Increase bookings, manage timings, gain visibility.</p>
+          </div>
+
+          <div className="built-card1">
+            <div className="built-icon1">
+              <FaGraduationCap />
+            </div>
+            <h3>Coaches</h3>
+            <p>Grow your academy and earn reputation.</p>
+          </div>
+
+          <div className="built-card1">
+            <div className="built-icon1">
+              <FaStore />
+            </div>
+            <h3>Shops</h3>
+            <p>Sell more without competing against big marketplaces.</p>
+          </div>
+
+          <div className="built-card1">
+            <div className="built-icon1">
+              <FaTrophy />
+            </div>
+            <h3>Organizers</h3>
+            <p>Run smoother tournaments & events.</p>
+          </div>
+
+          <div className="built-card1">
+            <div className="built-icon1">
+              <FaChartBar />
+            </div>
+            <h3>Investors & Partners</h3>
+            <p>
+              Join the fastest growing sports-tech ecosystem in Tamil Nadu.
+            </p>
           </div>
         </div>
       </div>
-    </div>
 
-{/* ================= GREEN STATS SECTION ================= */}
-<div className="stats-green1">
-  <h2 className="stats-green-title1">
-    Tamil Nadu's Fastest-Growing Sports Community
-  </h2>
 
-  <div className="stats-green-grid1">
-    <div className="stats-green-item1">
-      <div className="stats-green-icon1">
-        <FaRegStar size={20} />
+
+      {/* ================= TECH STACK SECTION ================= */}
+      <div className="tech-section1">
+        <h2 className="tech-title1">
+          A Modern Sports-Tech Platform Built With the Best Tech Stack
+        </h2>
+
+        <p className="tech-subtitle1">
+          Powered by React + Python for Speed & Reliability
+        </p>
+
+        <div className="tech-box1">
+          <p className="tech-desc1">
+            Adugalam is engineered with a fast and scalable React JS frontend and a
+            secure Python backend. This ensures:
+          </p>
+
+          <div className="tech-grid1">
+            <div className="tech-item1">
+              <FaBolt className="tech-icon1" />
+              <span>Lightning-fast UI</span>
+            </div>
+
+            <div className="tech-item1">
+              <FaShieldAlt className="tech-icon1" />
+              <span>High security for payments & user data</span>
+            </div>
+
+            <div className="tech-item1">
+              <FaChartLine className="tech-icon1" />
+              <span>Scalable architecture for 1,00,000+ users</span>
+            </div>
+
+            <div className="tech-item1">
+              <FaWifi className="tech-icon1" />
+              <span>Real-time match updates</span>
+            </div>
+
+            <div className="tech-item1">
+              <FaCode className="tech-icon1" />
+              <span>Optimized API for training programs & bookings</span>
+            </div>
+
+            <div className="tech-item1">
+              <FaDatabase className="tech-icon1" />
+              <span>Secure Python backend</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <h3>4.9/5</h3>
-      <p>Player Rating</p>
-    </div>
 
-    <div className="stats-green-item1">
-      <div className="stats-green-icon1">
-        <FiUsers size={20}/>
+      {/* ================= GREEN STATS SECTION ================= */}
+      <div className="stats-green1">
+        <h2 className="stats-green-title1">
+          Tamil Nadu's Fastest-Growing Sports Community
+        </h2>
+
+        <div className="stats-green-grid1">
+          <div className="stats-green-item1">
+            <div className="stats-green-icon1">
+              <FaRegStar size={20} />
+            </div>
+            <h3>4.9/5</h3>
+            <p>Player Rating</p>
+          </div>
+
+          <div className="stats-green-item1">
+            <div className="stats-green-icon1">
+              <FiUsers size={20} />
+            </div>
+            <h3>10,000+</h3>
+            <p>Players Engaged</p>
+          </div>
+
+          <div className="stats-green-item1">
+            <div className="stats-green-icon1">
+              <LuBuilding size={20} />
+            </div>
+            <h3>100+</h3>
+            <p>Venues Onboarded</p>
+          </div>
+
+          <div className="stats-green-item1">
+            <div className="stats-green-icon1">
+              <LuGraduationCap size={25} />
+            </div>
+            <h3>200+</h3>
+            <p>Coaches Listed</p>
+          </div>
+
+          <div className="stats-green-item1">
+            <div className="stats-green-icon1">
+              <GoTrophy size={20} />
+            </div>
+            <h3>1,200+</h3>
+            <p>Matches Hosted</p>
+          </div>
+        </div>
       </div>
-      <h3>10,000+</h3>
-      <p>Players Engaged</p>
-    </div>
 
-    <div className="stats-green-item1">
-      <div className="stats-green-icon1">
-        <LuBuilding  size={20}/>
+
+
+      {/* ================= INFO PARAGRAPH ================= */}
+      <div className="info-section1">
+        <p>
+          Adugalam is the leading sports community app in Tamil Nadu for discovering
+          players, booking sports venues, joining training programs, shopping sports
+          products, participating in tournaments, and engaging with sports events.
+          Whether you're looking for badminton courts in Tirunelveli, football
+          grounds in Madurai, cricket nets in Coimbatore, or volleyball turfs in
+          Chennai — Adugalam connects you with everything you need to play more and
+          play better. Our platform supports local sports shops, coaches, and venue
+          owners across Tamil Nadu including Tuticorin, Tenkasi, Kanyakumari,
+          Virudhunagar, Trichy, Salem, Erode, and Thanjavur with upcoming expansion to
+          more cities.
+        </p>
       </div>
-      <h3>100+</h3>
-      <p>Venues Onboarded</p>
-    </div>
 
-    <div className="stats-green-item1">
-      <div className="stats-green-icon1">
-        <LuGraduationCap size={25}/>
+      {/* ================= TESTIMONIALS ================= */}
+      <div className="testimonials1">
+        <h2 className="testimonials-title1">What Our Community Says</h2>
+        <p className="testimonials-subtitle1">
+          Real stories from players, venue owners, and coaches
+        </p>
+
+        <div className="testimonials-grid1">
+          <div className="testimonial-card1">
+            <div className="stars1">
+              ★★★★★
+            </div>
+            <p className="testimonial-text1">
+              "Finding players for badminton was always a challenge. Adugalam made it
+              so easy!"
+            </p>
+            <h4>Rajesh Kumar</h4>
+            <span>Player</span>
+          </div>
+
+          <div className="testimonial-card1">
+            <div className="stars1">
+              ★★★★★
+            </div>
+            <p className="testimonial-text1">
+              "Our bookings increased by 40% after partnering with Adugalam."
+            </p>
+            <h4>Priya Venkatesh</h4>
+            <span>Venue Owner</span>
+          </div>
+
+          <div className="testimonial-card1">
+            <div className="stars1">
+              ★★★★★
+            </div>
+            <p className="testimonial-text1">
+              "I can now reach more students and manage my batches efficiently."
+            </p>
+            <h4>Coach Selvam</h4>
+            <span>Cricket Coach</span>
+          </div>
+        </div>
       </div>
-      <h3>200+</h3>
-      <p>Coaches Listed</p>
-    </div>
 
-    <div className="stats-green-item1">
-      <div className="stats-green-icon1">
-        <GoTrophy  size={20}/>
+
+      {/* ================= BECOME A PARTNER ================= */}
+      <div className="stats-green1">
+        <h2 className="stats-green-title1">Become a Partner</h2>
+
+        <p className="partner-desc1">
+          Join Adugalam as a Venue Partner, Coach, Shop Owner, or Event Organizer and
+          grow your business with Tamil Nadu's fastest-growing sports community.
+        </p>
+
+        <div className="partner-buttons1">
+          <button className="partner-btn1 primary1" onClick={() => navigate("/partner")}>Partner With Us</button>
+          <button className="partner-btn1 secondary1" onClick={() => navigate("/Contact")}>Contact Us</button>
+        </div>
+
+        {/* Login Popup for first-time visitors */}
+        <LoginPopup
+          isOpen={showLoginPopup}
+          onClose={() => setShowLoginPopup(false)}
+        />
       </div>
-      <h3>1,200+</h3>
-      <p>Matches Hosted</p>
     </div>
-  </div>
-</div>
-
-
-
-{/* ================= INFO PARAGRAPH ================= */}
-<div className="info-section1">
-  <p>
-    Adugalam is the leading sports community app in Tamil Nadu for discovering
-    players, booking sports venues, joining training programs, shopping sports
-    products, participating in tournaments, and engaging with sports events.
-    Whether you're looking for badminton courts in Tirunelveli, football
-    grounds in Madurai, cricket nets in Coimbatore, or volleyball turfs in
-    Chennai — Adugalam connects you with everything you need to play more and
-    play better. Our platform supports local sports shops, coaches, and venue
-    owners across Tamil Nadu including Tuticorin, Tenkasi, Kanyakumari,
-    Virudhunagar, Trichy, Salem, Erode, and Thanjavur with upcoming expansion to
-    more cities.
-  </p>
-</div>
-
-{/* ================= TESTIMONIALS ================= */}
-<div className="testimonials1">
-  <h2 className="testimonials-title1">What Our Community Says</h2>
-  <p className="testimonials-subtitle1">
-    Real stories from players, venue owners, and coaches
-  </p>
-
-  <div className="testimonials-grid1">
-    <div className="testimonial-card1">
-      <div className="stars1">
-        ★★★★★
-      </div>
-      <p className="testimonial-text1">
-        "Finding players for badminton was always a challenge. Adugalam made it
-        so easy!"
-      </p>
-      <h4>Rajesh Kumar</h4>
-      <span>Player</span>
-    </div>
-
-    <div className="testimonial-card1">
-      <div className="stars1">
-        ★★★★★
-      </div>
-      <p className="testimonial-text1">
-        "Our bookings increased by 40% after partnering with Adugalam."
-      </p>
-      <h4>Priya Venkatesh</h4>
-      <span>Venue Owner</span>
-    </div>
-
-    <div className="testimonial-card1">
-      <div className="stars1">
-        ★★★★★
-      </div>
-      <p className="testimonial-text1">
-        "I can now reach more students and manage my batches efficiently."
-      </p>
-      <h4>Coach Selvam</h4>
-      <span>Cricket Coach</span>
-    </div>
-  </div>
-</div>
-
-
-{/* ================= BECOME A PARTNER ================= */}
-<div className="stats-green1">
-  <h2 className="stats-green-title1">Become a Partner</h2>
-
-  <p className="partner-desc1">
-    Join Adugalam as a Venue Partner, Coach, Shop Owner, or Event Organizer and
-    grow your business with Tamil Nadu's fastest-growing sports community.
-  </p>
-
-  <div className="partner-buttons1">
-    <button className="partner-btn1 primary1" onClick={()=>navigate("/partner")}>Partner With Us</button>
-    <button className="partner-btn1 secondary1" onClick={()=>navigate("/Contact")}>Contact Us</button>
-  </div>
-</div>
-
-
-    </div>
-    
   );
 };
 

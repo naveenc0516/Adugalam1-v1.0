@@ -4,10 +4,11 @@ import "./VendorRequest.css";
 const VendorRequest = () => {
   const [requests, setRequests] = useState([]);
 
-  /* -------- Fetch Vendors -------- */
+  /* -------- Fetch ALL Vendor Requests (Pending/Approved/Rejected) -------- */
+
   const fetchRequests = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/vendors/");
+      const res = await fetch("http://localhost:8000/api/vendors/pending/");
       const data = await res.json();
       setRequests(data);
     } catch (err) {
@@ -47,7 +48,8 @@ const VendorRequest = () => {
 
   return (
     <div className="vendor-request-page">
-      <h2>Vendor Requests</h2>
+      <h2>All Vendor Requests</h2>
+
 
       <table className="vendor-table">
         <thead>

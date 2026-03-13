@@ -1,25 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Banner.css";
 
 export default function Banner() {
+  const navigate = useNavigate();
   const slides = [
     {
       title: "Quick ground booking !",
       text: "Browse, book, and enjoy fun family moments.",
       btn: "Book now",
       img: "/banner4.jpg",
+      path: "/Bookhome",
     },
     {
       title: "Sports Event Booking !",
       text: "Find and book your favorite events.",
-      btn: "Explore",
+      btn: "Shop Now",
       img: "/banner2.jpg",
+      path: "/shop",
     },
     {
       title: "Tournament Registration !",
       text: "Join and participate in tournaments.",
-      btn: "Register",
+      btn: "Partner with us",
       img: "/banner1.jpg",
+      path: "/partner",
     },
   ];
 
@@ -76,7 +81,9 @@ export default function Banner() {
           <div className="banner-content">
             <h2>{slides[index].title}</h2>
             <p>{slides[index].text}</p>
-            <button>{slides[index].btn}</button>
+            <button onClick={() => navigate(slides[index].path)}>
+              {slides[index].btn}
+            </button>
           </div>
         </div>
       </div>

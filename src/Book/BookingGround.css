@@ -67,15 +67,15 @@
   margin-bottom: 0.6rem;
 }
 
-.day-box
-{
-   text-align: center;
+.day-box {
+  text-align: center;
   padding: 0.6rem 0;
   border-radius: 0.6rem;
-  background:white;
+  background: white;
   cursor: pointer;
   transition: 0.3s;
 }
+
 .date-box {
   text-align: center;
   padding: 0.6rem 0;
@@ -247,8 +247,8 @@
   .time-card {
     padding: 0.5rem 0.8rem;
   }
-  .gf-wrapper
-  {
+
+  .gf-wrapper {
     margin-top: 130px;
   }
 }
@@ -305,6 +305,7 @@
     font-size: 1rem;
   }
 }
+
 /* ===== CALENDAR ===== */
 
 .calendar-strip {
@@ -342,7 +343,7 @@
 
 .slot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(90px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 12px;
   margin-top: 15px;
 }
@@ -375,6 +376,7 @@
   color: white;
   transform: scale(1.05);
 }
+
 .slot-box.booked {
   background: #f2f2f2;
   color: #999;
@@ -397,11 +399,12 @@
   color: #e74c3c;
   font-weight: 600;
 }
+
 /* ===== SLOT GRID IMPROVED ===== */
 
 .slot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: 12px;
   margin-top: 15px;
 }

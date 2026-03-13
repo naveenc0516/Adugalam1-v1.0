@@ -68,23 +68,7 @@
 .vendor-submit-btn:hover {
   background: #157347;
 }
-.error-input {
-  border: 2px solid red !important;
-  outline: none;
-}
 
-.error-input:focus {
-  box-shadow: 0 0 5px red;
-}
-
-.error-input {
-  border: 2px solid red !important;
-  outline: none;
-}
-
-.error-input:focus {
-  box-shadow: 0 0 5px red;
-}
 /* Mobile */
 @media (max-width: 900px) {
   .vendor-form-grid {
