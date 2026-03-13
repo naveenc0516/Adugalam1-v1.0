@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ChangePassword.css";
+import { logoutUser } from "../utils/auth";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -48,11 +49,7 @@ const ChangePassword = () => {
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
     // Force logout
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("isAuthenticated");
-    window.dispatchEvent(new Event("authChange"));
+    logoutUser();
 
     setSuccess("Password changed successfully. Please login again.");
 

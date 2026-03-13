@@ -86,6 +86,10 @@ export default function VendorList() {
                       ? "status-on"
                       : "status-off"
                   }
+                  style={{
+                    backgroundColor: v.status === "Approved" ? "#22c55e" : "#ef4444",
+                    color: "white"
+                  }}
                   onClick={() =>
                     toggleStatus(v.vendor_id, v.status)
                   }

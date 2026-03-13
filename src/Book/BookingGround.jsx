@@ -205,7 +205,10 @@ const BookingGround = () => {
           <div
             key={d.full}
             className={`calendar-card ${selectedDate === d.full ? "active" : ""}`}
-            onClick={() => setSelectedDate(d.full)}
+            onClick={() => {
+              setSelectedDate(d.full);
+              setSelectedTimes([]); // 🔥 Clear previously selected slots on date change
+            }}
           >
             <div className="date-number">{d.day}</div>
             <div className="date-day">{d.label}</div>

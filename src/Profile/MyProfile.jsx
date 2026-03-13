@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
+import API from "../api/api";
 import "./MyProfile.css";
 
 const MyProfile = () => {
@@ -8,16 +9,18 @@ const MyProfile = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser) {
-      // Map backend fields to frontend display fields
-      setUser({
-        firstname: savedUser.name || "",
-        username: savedUser.name || "",
-        email: savedUser.email || "",
-        mobile: savedUser.mobile || ""
-      });
-    }
+    const fetchProfile = async () => {
+      try {
+        const res = await API.get("api/user/profile/");
+        setUser(res.data);
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+        const savedUser = JSON.parse(localStorage.getItem("user"));
+        if (savedUser) setUser(savedUser);
+      }
+    };
+
+    fetchProfile();
   }, []);
 
   return (
@@ -35,14 +38,8 @@ const MyProfile = () => {
 
       {/* Details */}
       <div className="myprofile-box">
-        <label>First name</label>
-        <div className="myprofile-field">{user.firstname}</div>
-
-        {/* <label>Last name</label>
-        <div className="myprofile-field">{user.lastname}</div> */}
-
-        <label>Username</label>
-        <div className="myprofile-field">{user.username}</div>
+        <label>Full name</label>
+        <div className="myprofile-field">{user.name}</div>
 
         <label>Email address</label>
         <div className="myprofile-field">{user.email}</div>
@@ -55,3 +52,4 @@ const MyProfile = () => {
 };
 
 export default MyProfile;
+

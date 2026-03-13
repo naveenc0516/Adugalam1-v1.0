@@ -1,190 +1,255 @@
-.vendor-page {
+.partner-wrapper {
   min-height: 100vh;
-  background: #f4f6f9;
-  padding: 25px;
+  background: #16a34a;
   display: flex;
   justify-content: center;
+  padding: 20px;
 }
-
-.vendor-card {
-  background: white;
-  max-width: 1100px;
+.t
+{
+    
+}
+.Partner-Form {
+  background: #fff;
   width: 100%;
+  max-width: 1200px;
+  border-radius: 18px;
   padding: 28px;
-  border-radius: 14px;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.18);
 }
 
-.vendor-title {
+.Partner-header {
   text-align: center;
+  font-size: 26px;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
-.vendor-form-grid {
+.Patner-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 24px;
 }
 
-.vendor-field {
+.form-group {
   display: flex;
   flex-direction: column;
 }
 
-.vendor-field.full {
+.form-group.full {
   grid-column: span 2;
 }
 
-.vendor-field input,
-.vendor-field select {
-  padding: 12px;
-  border-radius: 7px;
-  border: 1px solid #ccc;
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
-.games-wrapper {
+.form-group input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+/* AVAILABLE GAMES */
+.checkbox-group {
   display: flex;
   flex-wrap: wrap;
+  gap: 14px;
+}
+
+.checkbox-card {
+  display: flex !important;          /* FORCE */
+  flex-direction: row !important;    /* FORCE */
+  align-items: center !important;
   gap: 10px;
-}
 
-.game-chip {
-  background: #eef1f4;
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  background: #fff;
   cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.vendor-submit-btn {
+
+.checkbox-card input {
+  margin: 0;                   /* 🔥 removes default spacing */
+  width: 16px;
+  height: 16px;
+  accent-color: #111;
+}
+
+.checkbox-text {
+  line-height: 1;
+}
+
+.checkbox-card:hover {
+  background: #f8f8f8;
+  border-color: #cfcfcf;
+}
+
+.checkbox-card:has(input:checked) {
+  border-color: #000;
+}
+
+/* BUTTON */
+.submit-btn {
   grid-column: span 2;
-  padding: 14px;
-  background: #198754;
-  color: white;
+  padding: 16px;
+  border-radius: 14px;
+  background: #ea580c;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.vendor-submit-btn:hover {
-  background: #157347;
-}
-
-/* Mobile */
-@media (max-width: 900px) {
-  .vendor-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .vendor-field.full,
-  .vendor-submit-btn {
-    grid-column: span 1;
-  }
-}
-
-@media (min-width: 1400px) {
-  .vendor-card {
-    max-width: 1200px;
-  }
-
-  .vendor-form-grid {
-    gap: 22px;
-  }
-}
-
-
-
-@media (max-width: 1200px) {
-  .vendor-card {
-    max-width: 1000px;
-  }
-}
-
-
-/* =========================
-   SMALL LAPTOP / TABLET LANDSCAPE
-========================= */
-@media (max-width: 992px) {
-  .vendor-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .vendor-field.full,
-  .vendor-submit-btn {
-    grid-column: span 1;
-  }
-
-  .vendor-card {
-    padding: 22px;
-  }
-}
-
-
-/*   TABLET PORTRAIT */
+/* MOBILE */
 @media (max-width: 768px) {
-  .vendor-page {
-    padding: 18px;
+  .Patner-container {
+    grid-template-columns: 1fr;
   }
-
-  .vendor-card {
-    padding: 20px;
-  }
-
-  .vendor-title {
-    font-size: 20px;
-  }
-
-  .games-wrapper {
-    gap: 8px;
-  }
-
-  .game-chip {
-    padding: 8px 12px;
-    font-size: 14px;
+  .form-group.full,
+  .submit-btn {
+    grid-column: span 1;
   }
 }
 
 
-/* 
-   LARGE MOBILE
- */
-@media (max-width: 600px) {
-  .vendor-page {
-    padding: 12px;
-  }
+/* POLICY SECTION */
+.policy-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 6px;
+}
 
-  .vendor-card {
-    padding: 16px;
-    border-radius: 10px;
-  }
+.policy-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  
+}
 
-  .vendor-field input,
-  .vendor-field select {
+.policy-item input {
+  width: 16px;
+  height: 16px;
+  accent-color: #16a34a;
+}
+
+.policy-link {
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  
+}
+
+
+
+.policy-link:hover {
+  color: #1d4ed8;
+}
+
+/* DISABLED BUTTON */
+.submit-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+  .partner-wrapper {
     padding: 10px;
+  }
+
+  .Partner-Form {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .Partner-header {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+
+  /* FORM GRID */
+  .Patner-container {
+    gap: 16px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px 12px;
     font-size: 14px;
   }
 
-  .vendor-submit-btn {
-    padding: 12px;
+  /* MAP */
+  .gm-style {
+    border-radius: 12px;
+  }
+
+  /* Reduce map height */
+  div[style*="height: 260px"] {
+    height: 200px !important;
+  }
+
+  /* AVAILABLE GAMES */
+  .checkbox-group {
+    gap: 10px;
+  }
+
+  .checkbox-card {
+    padding: 8px 14px;
     font-size: 14px;
   }
-}
 
-
-/* 
-   SMALL MOBILE
-    */
-
-@media (max-width: 420px) {
-  .vendor-title {
-    font-size: 18px;
+  .checkbox-card input {
+    width: 14px;
+    height: 14px;
   }
 
-  .vendor-card {
+  /* POLICY SECTION */
+  .policy-item {
+    font-size: 13px;
+    align-items: flex-start;
+  }
+
+  .policy-item span {
+    line-height: 1.4;
+  }
+
+  .policy-link {
+    font-size: 13px;
+  }
+
+  /* BUTTON */
+  .submit-btn {
     padding: 14px;
-  }
-
-  .game-chip {
-    width: 100%;
-    text-align: center;
+    font-size: 16px;
+    border-radius: 12px;
   }
 }

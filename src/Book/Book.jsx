@@ -5,6 +5,7 @@ import Gallery from "./Gallery";
 import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { VscChevronLeft } from "react-icons/vsc";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -66,10 +67,13 @@ const GroundDetails = () => {
       {/* HEADER */}
       <div className="gp-headerr">
         <button
-          className="back-btnn"
+
+className="back-btnn"
+          style={{ color: "black" }}
+
           onClick={() => navigate(-1)}
         >
-          &lt;
+          <VscChevronLeft />
         </button>
       </div>
 

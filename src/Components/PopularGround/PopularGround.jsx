@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const API_BASE = "http://localhost:8000";
 
-const PopularGround = () => {
+const PopularGround = ({ selectedSport }) => {
 
   const navigate = useNavigate();
 
@@ -34,20 +34,20 @@ const PopularGround = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
+    const params = selectedSport ? { params: { game: selectedSport } } : {};
     axios
-      .get(`${API_BASE}/api/turfs/popular-turfs/`)
+      .get(`${API_BASE}/api/turfs/popular-turfs/`, params)
       .then((res) => {
-
         const data = Array.isArray(res.data)
           ? res.data
           : res.data.results || [];
-
         setTurfs(data);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
 
-  }, []);
+  }, [selectedSport]);
 
   const displayedTurfs = viewAll ? turfs : turfs.slice(0, 4);
 

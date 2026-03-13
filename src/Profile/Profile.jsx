@@ -11,21 +11,12 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import "./Profile.css";
+import { useState } from "react";
+import Logout from "../Components/Profile/Logout.jsx";
 
 const Profile = () => {
   const navigate = useNavigate();
-
-
-
-  const logout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userName");
-    window.dispatchEvent(new Event("authChange"));
-    navigate("/login", { replace: true });
-  };
-
+  const [showLogout, setShowLogout] = useState(false);
 
   return (
     <div className="profile-page">
@@ -42,19 +33,19 @@ const Profile = () => {
           <FaChevronRight />
         </div>
 
-        <div className="profile-item" onClick={()=>navigate("/profilehistory")}>
+        <div className="profile-item" onClick={() => navigate("/profilehistory")}>
           <FaHistory />
           <span>History</span>
           <FaChevronRight />
         </div>
 
-        <div className="profile-item" onClick={()=>navigate("/myfavourite")}>
+        <div className="profile-item" onClick={() => navigate("/myfavourite")}>
           <FaHeart />
           <span>My favourite</span>
           <FaChevronRight />
         </div>
 
-        <div className="profile-item" onClick={()=>navigate("/myreviews")}>
+        <div className="profile-item" onClick={() => navigate("/myreviews")}>
           <FaStar />
           <span>My reviews</span>
           <FaChevronRight />
@@ -78,14 +69,18 @@ const Profile = () => {
           <FaChevronRight />
         </div>
 
-        <div className="profile-item logout" onClick={logout}>
+        <div className="profile-item logout" onClick={() => setShowLogout(true)}>
           <FaSignOutAlt />
           <span>Log out</span>
           <FaChevronRight />
         </div>
       </div>
+
+      {showLogout && <Logout setOpen={setShowLogout} />}
     </div>
   );
 };
 
 export default Profile;
+
+// 

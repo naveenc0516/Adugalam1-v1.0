@@ -1,18 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./Header.css";
 import { CiBellOn } from "react-icons/ci";
 import { LuSettings2 } from "react-icons/lu";
+import Notification from "../Notification/Notification";
 
 const Header = () => {
-  const [firstname, setFirstname] = useState("User");
+  const [firstname, setFirstname] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [greeting, setGreeting] = useState("Hello");
+  const [showNotification, setShowNotification] = useState(false);
+  const notificationRef = useRef(null);
+
+  const updateName = () => {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    const storedName = localStorage.getItem("userName");
+    const token = localStorage.getItem("access");
+
+    if (token) {
+      setIsLoggedIn(true);
+      if (savedUser && savedUser.name) {
+        setFirstname(savedUser.name);
+      } else if (savedUser && savedUser.firstname) {
+        setFirstname(savedUser.firstname);
+      } else if (storedName) {
+        setFirstname(storedName);
+      } else {
+        setFirstname("User");
+      }
+    } else {
+      setIsLoggedIn(false);
+      setFirstname("");
+    }
+  };
 
   useEffect(() => {
-    // Get user name from localStorage
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser && savedUser.name) {
-      setFirstname(savedUser.name);
-    }
+    updateName();
+    window.addEventListener("authChange", updateName);
 
     // Get greeting based on time
     const hour = new Date().getHours();
@@ -26,19 +49,36 @@ const Header = () => {
     } else {
       setGreeting("Good night 🌙");
     }
+
+    return () => window.removeEventListener("authChange", updateName);
+  }, []);
+
+  useEffect(() => {
+    // Close notification if clicked outside
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotification(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div className="header-container">
       <div className="header-top">
         <div>
-          <p>Hello, {firstname}</p>
+          {isLoggedIn && <p>Hello, {firstname}</p>}
           <h2>{greeting}</h2>
         </div>
 
-        <button className="bell-btn">
-          <CiBellOn className="bellIcon" />
-        </button>
+        <div className="notification-wrapper" ref={notificationRef} style={{ position: "relative" }}>
+          <button className="bell-btn" onClick={() => setShowNotification(!showNotification)}>
+            <CiBellOn className="bellIcon" />
+          </button>
+          {showNotification && <Notification />}
+        </div>
       </div>
 
       {/*}<div className="search-area">
@@ -48,8 +88,8 @@ const Header = () => {
         </button>
       </div>{*/}
       <br></br>
-      
-          </div>
+
+    </div>
   );
 };
 

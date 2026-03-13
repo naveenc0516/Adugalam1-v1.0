@@ -1,25 +1,33 @@
+import React from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import "./Logout.css";
 import "./Sidebar";
-import { NavLink } from "react-router-dom";
-
+import { logoutUser } from "../utils/auth";
 
 function Logout() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate("/VendorLogin");
+  };
+
   return (
-    
+
     <div className="main-content">
       <div className="header">
         <h1>Account Settings</h1>
       </div>
-         <div className="sidebar">
+      <div className="sidebar">
         <h2>Adugalam</h2>
         <ul>
-          
-            <li>
+
+          <li>
             <NavLink to="/VendorDashboard">Dashboard</NavLink>
           </li>
 
 
-        
+
           <li>
             <NavLink to="/addturf">Add Turf</NavLink>
           </li>
@@ -40,7 +48,7 @@ function Logout() {
             <NavLink to="/Vendorlogout">Logout</NavLink>
           </li>
 
-          
+
         </ul>
       </div>
 
@@ -49,7 +57,7 @@ function Logout() {
         <p>Are you sure you want to logout from Adukalam?</p>
 
         <div className="btn-group">
-          <button className="btn logout-btn">Logout</button>
+          <button className="btn logout-btn" onClick={handleLogout}>Logout</button>
         </div>
 
         <hr />

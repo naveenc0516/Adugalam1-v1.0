@@ -1,11 +1,9 @@
-
-
-*{
+* {
   font-family: "Space Grotesk", sans-serif;
 }
 
 .about-page {
-  
+
   color: #040509;
   background: #f9fafb;
 }
@@ -31,26 +29,26 @@ h1 {
 
 .about-subtitle {
   max-width: 640px;
-  margin: 0 auto 1rem; 
+  margin: 0 auto 1rem;
   padding-top: 15px;
   padding-bottom: 20px;
   font-size: 18px;
   color: #4b5563;
 }
 
-.about-stats1{
+.about-stats1 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
   max-width: 900px;
-  margin: auto; 
+  margin: auto;
 }
 
 .stat-card1 h2 {
   font-size: 2rem;
   font-weight: 700;
-  color:#16a34a;
-  
+  color: #16a34a;
+
 }
 
 .stat-card1 p {
@@ -77,12 +75,13 @@ h1 {
   margin: 0 auto;
   padding: 3rem 1.5rem;
   border-bottom: 1px solid #e5e7eb;
-  background: #f9fafb; 
+  background: #f9fafb;
 }
-.new8{
+
+.new8 {
   margin-left: 290px;
-    font-size: 17px;
- color: #4b5563;
+  font-size: 17px;
+  color: #4b5563;
 }
 
 .about-section .info-card {
@@ -101,15 +100,15 @@ h1 {
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 14px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.08);
 }
 
 /* -------------- */
 .about-section1 {
   max-width: 750px;
-  margin: 0 auto;       
+  margin: 0 auto;
   padding: 2rem 1rem;
-  text-align: left;    
+  text-align: left;
 }
 
 .about-section1 h3 {
@@ -117,7 +116,7 @@ h1 {
   font-weight: 800;
   margin-bottom: 1.2rem;
   color: #111827;
-  text-align: left;    
+  text-align: left;
 }
 
 .about-section1 p {
@@ -127,8 +126,8 @@ h1 {
   margin-bottom: 1rem;
   line-height: 1.6;
   /* text-align: left; */
-  max-width: 710px;     
-  word-wrap: break-word; 
+  max-width: 710px;
+  word-wrap: break-word;
 }
 
 /* -------------- */
@@ -136,9 +135,9 @@ h1 {
 
 .about-section {
   max-width: 750px;
-  margin: 1px auto ;       
+  margin: 1px auto;
   padding: 2rem 1rem;
-  text-align: left;    
+  text-align: left;
 }
 
 .about-section h3 {
@@ -146,7 +145,7 @@ h1 {
   font-weight: 700;
   margin-bottom: 1.2rem;
   color: #111827;
-  margin-left: 5  0px;    
+  margin-left: 5 0px;
 }
 
 .about-section h2 {
@@ -156,16 +155,17 @@ h1 {
   color: #111827;
   text-align: center;
 }
+
 .about-section p {
-   display: -webkit-box;
-  -webkit-line-clamp: 5;  
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 
-.new9{
+.new9 {
   margin-left: 320px;
-    font-size: 17px;
- color: #4b5563;
+  font-size: 17px;
+  color: #4b5563;
 }
 
 /* Cards */
@@ -178,7 +178,7 @@ h1 {
 
 
 .info-card {
-  
+
   background: #ffffff;
   border-radius: 0.75rem;
   border: 3px solid black;
@@ -204,7 +204,7 @@ h1 {
   gap: 1.7rem;
   row-gap: 0.75rem;
   margin-top: 1.2rem;
-  white-space: normal; 
+  white-space: normal;
 }
 
 .about-section.where-operate {
@@ -227,7 +227,7 @@ h1 {
     transform 0.25s ease,
     box-shadow 0.25s ease,
     background-color 0.25s ease,
-     color 0.25s ease;
+    color 0.25s ease;
 }
 
 
@@ -254,7 +254,7 @@ h1 {
 .about-cta {
   text-align: center;
   padding: 3rem 1.5rem 3.5rem;
-  background: #050506;  
+  background: #050506;
   color: #f9fafb;
 }
 
@@ -269,11 +269,12 @@ h1 {
   font-size: 1.1rem;
   color: #e5e7eb;
 }
+
 .about-cta>.tropy {
   font-size: 48px;
   margin-bottom: 1rem;
   color: #16a34a;
-  
+
 }
 
 /* carddd */
@@ -285,7 +286,7 @@ h1 {
   padding: 1.75rem 1.25rem;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  transition: 
+  transition:
     transform 0.35s ease,
     box-shadow 0.35s ease,
     border-color 0.35s ease;
@@ -346,8 +347,8 @@ h1 {
 }
 
 .info-card p span {
-  display: block;      
-  text-align: center;   
+  display: block;
+  text-align: center;
 }
 
 /* Responsive adjustment */
@@ -419,7 +420,7 @@ h1 {
   }
 
   /* STATS */
-  .about-stats1{
+  .about-stats1 {
     grid-template-columns: 1fr;
     gap: 1rem;
     margin-top: 1.5rem;
@@ -427,7 +428,7 @@ h1 {
 
   .stat-card1 h2 {
     font-size: 1.6rem;
-    
+
   }
 
   .stat-card1 p {
@@ -519,7 +520,7 @@ h1 {
 
 @media (max-width: 480px) {
 
-  
+
 
   /* HERO */
   .about-hero {
@@ -573,16 +574,17 @@ h1 {
 
   .about-section p,
   .about-section1 p {
-    
+
     font-size: 0.92rem;
     line-height: 1.6;
     text-align: left;
   }
 
-  .about-section1 p{
-      text-align: justify;
+  .about-section1 p {
+    text-align: justify;
   }
-  .info-card p{
+
+  .info-card p {
     text-align: center;
 
   }
@@ -593,13 +595,15 @@ h1 {
     display: block;
     margin-left: 10px;
   } */
-.new8{
-      margin-left: 120px;
+  .new8 {
+    margin-left: 120px;
 
-}
-.new9{
+  }
+
+  .new9 {
     margin-left: 155px;
-}
+  }
+
   /* CARDS */
   .card-row {
     grid-template-columns: 1fr;
@@ -657,16 +661,16 @@ h1 {
   .card-row {
     display: flex;
     flex-wrap: nowrap;
-    
+    overflow-x: auto;
     gap: 16px;
     padding-bottom: 10px;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
 
-  
 
-  .info-card{
+
+  .info-card {
     min-width: 85%;
     flex-shrink: 0;
     scroll-snap-align: start;

@@ -19,6 +19,15 @@
   color: white;
 }
 
+.game-badge {
+  display: inline-block;
+  background: #eef6ff;
+  border: 1px solid #c7defc;
+  padding: 4px 8px;
+  margin: 2px;
+  border-radius: 8px;
+  font-size: 13px;
+}
 
 /* Gallery */
 .gallery-row {
@@ -77,4 +86,50 @@
   height: 45px;
   object-fit: cover;
   border-radius: 6px;
+}
+
+/* Toggle Switch Styles */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #16a34a;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
 }

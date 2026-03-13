@@ -83,7 +83,7 @@ const AddVendor = () => {
       alert("Vendor Added ID: " + data.vendor_id);
 
       // Redirect to Vendor Request page
-      navigate("/vendorRequest");
+      navigate("/");
 
     } catch (err) {
       alert("Server not reachable");
@@ -205,7 +205,7 @@ const AddVendor = () => {
                   />
                   {g}
                 </label>
-              ))} 
+              ))}
             </div>
           </div>
 

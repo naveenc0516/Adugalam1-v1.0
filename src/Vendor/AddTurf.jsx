@@ -6,28 +6,17 @@ import {
   useJsApiLoader,
   Marker,
 } from "@react-google-maps/api";
-import { useNavigate } from "react-router-dom";
 
-const games = ["Cricket/Football", "Badminton", "Tennis"];
+const games = ["Cricket/Football", "Batmiton", "Tennis"];
 const amenities = ["Camera", "Parking", "Water", "Toilet"];
 const features = ["Indoor", "Outdoor", "Grass Turf"];
-
-// Helper function to clean address - remove plus codes like "PQ7C+M7G"
-const cleanAddress = (address) => {
-  if (!address) return "";
-  // Remove plus code pattern (e.g., "PQ7C+M7G," or "PQ7C+M7G ")
-  let cleaned = address.replace(/^[A-Z0-9]{4}\+[A-Z0-9]{2},?\s*/gi, "");
-  // Clean up any leading commas or spaces
-  cleaned = cleaned.replace(/^[,]\s*/, "").trim();
-  return cleaned;
-};
 
 const hours = Array.from({ length: 12 }, (_, i) => i + 1);
 const minutes = Array.from(
   { length: 60 },
   (_, i) => i.toString().padStart(2, "0")
 );
-const meridians = ["AM", "PM"];
+const meridians = ["AM/PM","AM", "PM"];
 
 const mapContainerStyle = {
   width: "100%",
@@ -39,11 +28,6 @@ const mapContainerStyle = {
 const defaultCenter = { lat: 11.1271, lng: 78.6569 };
 
 export default function AddTurf() {
-  const navigate = useNavigate();
-  
-  // Validation error states
-  const [errors, setErrors] = useState({});
-  
   const [form, setForm] = useState({
     vendorId: "",
     vendorName: "",
@@ -58,12 +42,7 @@ export default function AddTurf() {
     gallery: [],
     banner: [],
     slotMode: "all",
-    slots: { 
-      all: { 
-        from: { hour: "", minute: "", meridian: "" }, 
-        to: { hour: "", minute: "", meridian: "" } 
-      } 
-    },
+    slots: { all: {} },
     generatedSlots: [],
   });
 
@@ -160,76 +139,36 @@ export default function AddTurf() {
   };
 
   const toMinutes = (time) => {
-    if (!time || !time.hour || !time.minute || !time.meridian) return null;
+    if (!time) return null;
     let { hour, minute, meridian } = time;
-
-    // Handle empty or invalid values
-    if (hour === "Hour" || minute === "Min") return null;
 
     hour = Number(hour);
     minute = Number(minute);
 
-    if (isNaN(hour) || isNaN(minute)) return null;
-
-    // Handle 12 AM and 12 PM correctly
-    // 12 AM (midnight) should be 0
-    // 12 PM (noon) should be 12
-    if (meridian === "AM") {
-      if (hour === 12) {
-        hour = 0;
-      }
-    } else if (meridian === "PM") {
-      if (hour !== 12) {
-        hour += 12;
-      }
-    }
+    if (meridian === "PM" && hour !== 12) hour += 12;
+    if (meridian === "AM" && hour === 12) hour = 0;
 
     return hour * 60 + minute;
   };
 
   const formatTime = (mins) => {
-    // Handle negative minutes (for midnight crossing)
-    if (mins < 0) mins += 24 * 60;
-    
     let hour = Math.floor(mins / 60);
     let minute = mins % 60;
 
-    // Handle 24-hour wrap
-    if (hour >= 24) hour = hour % 24;
-    if (hour < 0) hour = 0;
-
     const meridian = hour >= 12 ? "PM" : "AM";
-    
-    // Convert 0 to 12 for display
-    const displayHour = hour % 12 || 12;
+    hour = hour % 12 || 12;
 
-    return `${displayHour}:${minute === 0 ? "00" : minute} ${meridian}`;
+    return `${hour}:${minute === 0 ? "00" : minute} ${meridian}`;
   };
 
   const generateSlots = () => {
     const s = form.slots?.all;
 
     if (!form.price) return alert("Enter price per hour");
-    
-    // Validate time selection - check if all required fields exist and are valid
-    const fromTime = s?.from;
-    const toTime = s?.to;
-    
-    if (!fromTime || !toTime) return alert("Select start & end time");
-    
-    // Check if hour, minute and meridian are selected (not placeholder values)
-    const fromValid = fromTime.hour && fromTime.hour !== "Hour" && 
-                      fromTime.minute && fromTime.minute !== "Min" && 
-                      fromTime.meridian;
-    const toValid = toTime.hour && toTime.hour !== "Hour" && 
-                    toTime.minute && toTime.minute !== "Min" && 
-                    toTime.meridian;
-    
-    if (!fromValid) return alert("Select complete start time (hour, minute, AM/PM)");
-    if (!toValid) return alert("Select complete end time (hour, minute, AM/PM)");
+    if (!s?.from || !s?.to) return alert("Select start & end time");
 
-    let start = toMinutes(fromTime);
-    let end = toMinutes(toTime);
+    let start = toMinutes(s.from);
+    let end = toMinutes(s.to);
 
     if (start === null || end === null)
       return alert("Invalid time selection");
@@ -246,22 +185,18 @@ export default function AddTurf() {
     let current = start;
 
     while (current + 60 <= end) {
-      const fromTimeVal = current % (24 * 60);
-      const toTimeVal = (current + 60) % (24 * 60);
+      const fromTime = current % (24 * 60);
+      const toTime = (current + 60) % (24 * 60);
 
       slots.push({
         id: createId(),
-        from: formatTime(fromTimeVal),
-        to: formatTime(toTimeVal),
+        from: formatTime(fromTime),
+        to: formatTime(toTime),
         price: pricePerHour,
         is_booked: false,
       });
 
       current += 60;
-    }
-
-    if (slots.length === 0) {
-      return alert("No slots generated. Please check your time selection.");
     }
 
     setForm((p) => ({ ...p, generatedSlots: slots }));
@@ -293,12 +228,9 @@ export default function AddTurf() {
     setCenter(newCenter);
     setMarkerPosition(newCenter);
 
-    // Clean the address to remove plus code
-    const cleanedLocation = cleanAddress(place.formatted_address || place.name);
-
     setForm((p) => ({
       ...p,
-      location: cleanedLocation,
+      location: place.formatted_address || place.name,
       latitude: lat.toFixed(6),
       longitude: lng.toFixed(6),
     }));
@@ -315,11 +247,9 @@ export default function AddTurf() {
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ location: { lat, lng } }, (results, status) => {
       if (status === "OK" && results[0]) {
-        // Clean the address to remove plus code
-        const cleanedLocation = cleanAddress(results[0].formatted_address);
         setForm((p) => ({
           ...p,
-          location: cleanedLocation,
+          location: results[0].formatted_address,
           latitude: lat.toFixed(6),
           longitude: lng.toFixed(6),
         }));
@@ -333,60 +263,21 @@ export default function AddTurf() {
     });
   };
 
-  // Validate all mandatory fields
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!form.vendorId || !form.vendorName) {
-      newErrors.vendorId = "Vendor ID is required";
-    }
-    if (!form.location) {
-      newErrors.location = "Location is required";
-    }
-    if (!form.price) {
-      newErrors.price = "Price is required";
-    }
-    if (form.games.length === 0) {
-      newErrors.games = "Please select a game";
-    }
-    if (form.amenities.length === 0) {
-      newErrors.amenities = "Please select at least one amenity";
-    }
-    if (form.features.length === 0) {
-      newErrors.features = "Please select a feature";
-    }
-    if (!form.description) {
-      newErrors.description = "Description is required";
-    }
-    if (form.gallery.length < 3) {
-      newErrors.gallery = "Minimum 3 gallery images required";
-    }
-    if (form.banner.length < 3) {
-      newErrors.banner = "Minimum 3 banner images required";
-    }
-    if (form.generatedSlots.length === 0) {
-      newErrors.slots = "Please generate slots";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const submit = async (e) => {
     e.preventDefault();
 
-    // Validate form first
-    if (!validateForm()) {
-      // Scroll to first error
-      const firstError = document.querySelector('.input-error');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+    if (!form.latitude || !form.longitude) {
+      alert("Please select a location on the map");
       return;
     }
 
-    if (!form.latitude || !form.longitude) {
-      setErrors(prev => ({ ...prev, location: "Please select a location on the map" }));
+    if (form.gallery.length < 3) {
+      alert("Minimum 3 gallery images required");
+      return;
+    }
+
+    if (form.banner.length < 3) {
+      alert("Minimum 3 banner images required");
       return;
     }
 
@@ -425,7 +316,6 @@ export default function AddTurf() {
 
     if (res.ok) {
       alert("Turf Added Successfully");
-      navigate("/TurfList");
     } else {
       alert("Error adding turf");
     }
@@ -445,51 +335,31 @@ export default function AddTurf() {
 
       <form onSubmit={submit} className="form">
         {/* Vendor */}
-        <div className="form-group">
-          <label>Vendor ID *</label>
-          <input
-            name="vendorId"
-            placeholder="Enter Vendor ID"
-            className={errors.vendorId ? "input-error" : ""}
-            onChange={(e) => {
-              handleChange(e);
-              fetchVendor(e.target.value);
-              if (errors.vendorId) setErrors(prev => ({...prev, vendorId: null}));
-            }}
-            required
-          />
-          {errors.vendorId && <span className="error-text">{errors.vendorId}</span>}
-        </div>
-        <div className="form-group">
-          <input 
-            value={form.vendorName || "Vendor name will appear here"} 
-            readOnly 
-            placeholder="Vendor Name"
-            className={errors.vendorId ? "input-error" : ""}
-          />
-        </div>
+        <input
+          name="vendorId"
+          placeholder="Vendor ID"
+          onChange={(e) => {
+            handleChange(e);
+            fetchVendor(e.target.value);
+          }}
+          required
+        />
+        <input value={form.vendorName} readOnly />
 
         {/* Location with Map */}
-        <div className="form-group">
-          <label>Turf Location *</label>
-          <input
-            name="location"
-            placeholder="Search location or select on map"
-            value={form.location}
-            className={errors.location ? "input-error" : ""}
-            onChange={(e) => {
-              handleChange(e);
-              if (errors.location) setErrors(prev => ({...prev, location: null}));
-            }}
-            required
-          />
-          {errors.location && <span className="error-text">{errors.location}</span>}
-        </div>
+        <label>Turf Location</label>
+        <input
+          name="location"
+          placeholder="Search location or select on map"
+          value={form.location}
+          onChange={handleChange}
+          required
+        />
 
         <button
           type="button"
           onClick={() => setShowMap(!showMap)}
-          className="map-toggle-btn"
+          style={{ marginBottom: "10px" }}
         >
           {showMap ? "Hide Map" : "Show Map to Select Location"}
         </button>
@@ -709,9 +579,7 @@ export default function AddTurf() {
                   },
                 }))
               }
-              value={form.slots?.all?.from?.meridian || ""}
             >
-              <option value="">AM/PM</option>
               {meridians.map((m) => (
                 <option key={m}>{m}</option>
               ))}
@@ -770,9 +638,7 @@ export default function AddTurf() {
                   },
                 }))
               }
-              value={form.slots?.all?.to?.meridian || ""}
             >
-              <option value="">AM/PM</option>
               {meridians.map((m) => (
                 <option key={m}>{m}</option>
               ))}
