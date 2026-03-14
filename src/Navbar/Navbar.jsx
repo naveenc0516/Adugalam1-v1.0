@@ -6,6 +6,7 @@ import "./Navbar.css";
 import LocationIcon from "../images/image copy 2.png";
 import { logoutUser } from "../utils/auth";
 import Logout from "../Components/Profile/Logout";
+import { CiLocationOn } from "react-icons/ci";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -13,6 +14,10 @@ const Navbar = () => {
   const [locationName, setLocationName] = useState("Select City");
   const [logoutPopupOpen, setLogoutPopupOpen] = useState(false);
   const [userName, setUserName] = useState("");
+
+  // Show both words if two-word name; only first word if three+ words
+  const words = userName.trim().split(/\s+/);
+  const displayName = words.length > 2 ? words[0] : userName.trim();
 
   /* ================= AUTH SYNC ================= */
   useEffect(() => {
@@ -130,16 +135,16 @@ const Navbar = () => {
 
           {/* LOCATION (DYNAMIC) */}
           <NavLink to="/location" className="loca">
-            <img src={LocationIcon} alt="" className="local" />
-            &nbsp; {locationName}
+            <CiLocationOn />
+            {locationName}
           </NavLink>
 
           {/* MOBILE PROFILE */}
           <div className="mobile-profile-right">
             {isAuth && (
-              <NavLink to="/profile" className="mobile-profile">
-                <CgProfile size={20} />
-                {userName && <span className="mobile-username" style={{ marginLeft: '6px', fontSize: '14px', fontWeight: '600', color: '#333' }}>{userName}</span>}
+              <NavLink to="/profile" className="mobile-profile user-profile-box">
+                <CgProfile size={22} />
+                {displayName && <span className="navbar-username">{displayName}</span>}
               </NavLink>
             )}
           </div>
@@ -177,7 +182,7 @@ const Navbar = () => {
             ) : (
               <NavLink to="/profile" className="profile-icon user-profile-box">
                 <CgProfile size={28} />
-                {userName && <span className="navbar-username">{userName}</span>}
+                {displayName && <span className="navbar-username">{displayName}</span>}
               </NavLink>
             )}
           </div>
